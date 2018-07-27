@@ -5,6 +5,7 @@ namespace App\Services;
 use App\User;
 use Jasny\ValidationResult;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Jasny\SSO\Server as FactoryServer;
 
 class SSOServer extends FactoryServer
@@ -44,10 +45,10 @@ class SSOServer extends FactoryServer
         }
 
         if (Auth::attempt(['email' => $username, 'password' => $password])) {
-            return ValidationResult::error('Invalid credentials');
+            return ValidationResult::success();
         }
 
-        return ValidationResult::success();
+        return ValidationResult::error('Invalid credentials');
     }
 
     /**

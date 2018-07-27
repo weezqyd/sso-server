@@ -12,3 +12,7 @@
 */
 
 Route::match(['get', 'post'], '/login/sso', 'SSOController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
