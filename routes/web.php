@@ -11,7 +11,7 @@
 |
 */
 
-Route::match(['get', 'post'], '/login/sso', 'SSOController');
+Route::match(['get', 'post'], '/login/sso', 'HomeController@samlRedirect')->name('saml.auth');
 
 Auth::routes();
 

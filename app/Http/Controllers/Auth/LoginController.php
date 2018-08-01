@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Services\SamlAuth;
 
 class LoginController extends Controller
 {
@@ -18,7 +20,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers, SamlAuth;
 
     /**
      * Where to redirect users after login.
@@ -29,11 +31,18 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if ($request->filled('SAMLRequest')) {
+            $this->handleSamlLoginRequest($request);
+
+            return redirect()->route('saml.auth');
+        }
     }
 }

@@ -19,12 +19,10 @@ class SSOController extends Controller
         if (!$command || !method_exists($ssoServer, $command)) {
             return response([
                 'status' => 'error',
-                'error' => 'This rquest cannot be handled by this server',
+                'error' => 'This request cannot be handled by this server',
             ], 400);
         }
-        $user = $ssoServer->{$command}();
-        if ($user) {
-            return response()->json($user);
-        }
+
+        return $ssoServer->$command();
     }
 }
